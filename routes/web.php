@@ -25,10 +25,18 @@ Route::post('/auth/signIn', [AuthController::class, 'signIn']);
 Route::get('/signUp', [AuthController::class, 'getSignUp']);
 Route::post('/auth/signUp', [AuthController::class, 'store']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
+Route::get('/dashboard', [RoomController::class, 'dashboard']);
 
+//rooms
 Route::middleware(['admin'])->group(function () {
     Route::get('/rooms', [RoomController::class, 'index']);
+});
+Route::middleware(['admin'])->group(function () {
+    Route::post('/rooms/add', [RoomController::class, 'store'])->name('rooms.add');
+});
+Route::middleware(['admin'])->group(function () {
+    Route::put('/rooms/{id_kamar}/edit', [RoomController::class, 'update'])->name('rooms.update');
+});
+Route::middleware(['admin'])->group(function () {
+    Route::delete('/rooms/{id_kamar}/delete', [RoomController::class, 'destroy'])->name('rooms.destroy');
 });

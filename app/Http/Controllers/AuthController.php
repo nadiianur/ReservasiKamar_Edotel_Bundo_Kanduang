@@ -30,7 +30,6 @@ class AuthController extends Controller
         return back()->withErrors([
             'email' => 'Email atau Password Salah',
         ]);
-
     }
     function getSignUp(){
         return view("auth.signUp");
@@ -39,7 +38,7 @@ class AuthController extends Controller
     function store(Request $request){
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
-            'email' => 'required|unique:users',
+            'email' => 'required|unique:users,email',
             'password'  => 'required|min:8' ,
             'no_hp' => 'required|max:12|numeric',
             'jenis_kelamin'=>'required'

@@ -10,6 +10,8 @@ class Kamar extends Model
     use HasFactory;
     protected $table = 'rooms';
 
+
+    protected $primaryKey = 'id_kamar';
     protected $guarded = ["id_kamar"];
 
     public function transaksi(){
