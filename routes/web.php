@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/signIn', [AuthController::class, 'getSignIn'])->name('signIn');
+Route::post('/auth/signIn', [AuthController::class, 'signIn']);
+
+Route::get('/signUp', [AuthController::class, 'getSignUp']);
+Route::post('/auth/signUp', [AuthController::class, 'store']);
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+
+Route::middleware(['admin'])->group(function () {
+    Route::get('/rooms', [RoomController::class, 'index']);
 });

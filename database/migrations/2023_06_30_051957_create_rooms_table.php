@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kamar', function (Blueprint $table) {
-            $table->bigInteger('id_kamar')->primary();
-            $table->bigInteger('id_transaksi');
+        Schema::create('rooms', function (Blueprint $table) {
+            $table->bigIncrements('id_kamar');
             $table->bigInteger('no_kamar');
+            $table->string('tipe_kamar');
             $table->bigInteger('harga');
             $table->string('status');
             $table->bigInteger('kapasitas');
+            $table->timestamps();
         });
-
     }
 
     /**
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kamar');
+        Schema::dropIfExists('rooms');
     }
 };

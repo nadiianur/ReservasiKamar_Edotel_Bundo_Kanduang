@@ -17,10 +17,17 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+     protected $table = 'users';
+     protected $primaryKey = 'id_user';
+
     protected $fillable = [
-        'name',
+        'nama',
         'email',
         'password',
+        'no_hp',
+        'jenis_kelamin',
+        'role',
     ];
 
     /**
@@ -28,6 +35,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -42,4 +51,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function transaksi(){
+        return $this->hasMany(Transaksi::class, "id_user", "id_user");
+    }
 }

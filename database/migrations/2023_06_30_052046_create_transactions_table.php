@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transaksi', function (Blueprint $table) {
-            $table->bigInteger('id_transaksi')->primary();
-            $table->bigInteger('id_user');
-            $table->bigInteger('id_kamar');
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->bigIncrements('id_transaksi');
+            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_kamar');
             $table->bigInteger('total_harga');
             $table->string('status', 15);
             $table->dateTime('check_in_at');
@@ -23,9 +23,9 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::table('transaksi', function (Blueprint $table) {
+        Schema::table('transactions', function (Blueprint $table) {
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('id_kamar')->references('id_kamar')->on('kamar')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_kamar')->references('id_kamar')->on('rooms')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transaksi');
+        Schema::dropIfExists('transactions');
     }
 };
