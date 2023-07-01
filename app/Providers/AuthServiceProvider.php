@@ -25,5 +25,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('view-rooms', function ($user) {
             return $user->role === 'admin';
         });
+
+        Gate::define('view-buttons', function ($user) {
+            return $user->role === 'admin';
+        });
     }
 }

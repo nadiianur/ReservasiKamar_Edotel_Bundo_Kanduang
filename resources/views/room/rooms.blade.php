@@ -79,6 +79,7 @@
                             <select class="form-select" id="status" aria-label="Default select example" name="status">
                                 <option selected>Pilih</option>
                                 <option value="ready">Ready</option>
+                                <option value="not ready">Not Ready</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -115,7 +116,7 @@
                 <td>{{$loop->iteration}}</td>
                 <td>Room {{ $room->no_kamar }}</td>
                 <td>{{ $room->tipe_kamar }}</td>
-                <td>{{ $room->harga }}</td>
+                <td>IDR {{ $room->harga }}</td>
                 <td>{{ $room->status }}</td>
                 <td>{{ $room->kapasitas }} person</td>
                 <td>
@@ -170,6 +171,8 @@
                                             <select class="form-select" id="editStatus" name="status">
                                                 <option value="ready" {{ $room->status == 'ready' ? 'selected' : '' }}>
                                                     Ready</option>
+                                                <option value="not ready" {{ $room->status == 'not ready' ? 'selected' : '' }}>
+                                                    Not Ready</option>
                                             </select>
                                         </div>
                                         <div class="mb-3">
@@ -187,10 +190,11 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End Modal Edit-->
 
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                         data-bs-target="#modalHapusData{{$room->id_kamar}}">
-                        <i class="bi bi-trash"> Delete</i>
+                        <i class="bi bi-trash"></i> Delete
                     </button>
 
                     <!-- Modal Delete-->

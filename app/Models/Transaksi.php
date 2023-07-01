@@ -10,15 +10,16 @@ class Transaksi extends Model
     use HasFactory;
 
     protected $table = 'transactions';
+    protected $primaryKey = 'id_transaksi';
     protected $guarded = [
         'id_transaksi'
     ];
 
-    public function user(){
+    public function User(){
         return $this->belongsTo(User::class, "id_user", "id_user");
     }
 
-    public function kamar(){
+    public function Kamar(){
         return $this->belongsTo(Kamar::class, "id_kamar", "id_kamar");
     }
 }

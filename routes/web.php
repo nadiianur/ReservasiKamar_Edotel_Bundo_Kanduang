@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,16 +16,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+//landing page
 Route::get('/', function () {
     return view('welcome');
 });
 
+//login
 Route::get('/signIn', [AuthController::class, 'getSignIn'])->name('signIn');
 Route::post('/auth/signIn', [AuthController::class, 'signIn']);
 
+//register
 Route::get('/signUp', [AuthController::class, 'getSignUp']);
 Route::post('/auth/signUp', [AuthController::class, 'store']);
 
+//dashboard
 Route::get('/dashboard', [RoomController::class, 'dashboard']);
 
 //rooms
@@ -40,3 +46,13 @@ Route::middleware(['admin'])->group(function () {
 Route::middleware(['admin'])->group(function () {
     Route::delete('/rooms/{id_kamar}/delete', [RoomController::class, 'destroy'])->name('rooms.destroy');
 });
+
+//transactions
+Route::get('/transactions', [TransactionController::class, 'index']);
+Route::middleware(['admin'])->group(function () {
+    Route::put('/transactions/{id_transaksi}/verify', [TransactionController::class, 'verify'])->name('transactions.verify');
+});
+Route::middleware(['admin'])->group(function () {
+    Route::delete('/transactions/{id_transaksi}/delete', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+});
+

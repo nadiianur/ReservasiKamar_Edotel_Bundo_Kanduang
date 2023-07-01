@@ -14,7 +14,7 @@ class Kamar extends Model
     protected $primaryKey = 'id_kamar';
     protected $guarded = ["id_kamar"];
 
-    public function transaksi(){
+    public function Transaksi(){
         return $this->hasMany(Transaksi::class, "id_kamar", "id_kamar");
     }
 }

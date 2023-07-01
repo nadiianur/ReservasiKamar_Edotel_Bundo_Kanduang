@@ -47,7 +47,7 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id_kamar)
     {
-        $data = $request->validate([
+        $request->validate([
             'no_kamar' => 'required|numeric',
             'tipe_kamar' => 'required',
             'harga' => 'required|numeric',
