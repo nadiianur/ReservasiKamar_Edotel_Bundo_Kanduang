@@ -25,10 +25,19 @@ Route::get('/', function () {
 //login
 Route::get('/signIn', [AuthController::class, 'getSignIn'])->name('signIn');
 Route::post('/auth/signIn', [AuthController::class, 'signIn']);
+Route::post('/logout', [AuthController::class, 'logOut'])->name('logOut');
 
 //register
 Route::get('/signUp', [AuthController::class, 'getSignUp']);
 Route::post('/auth/signUp', [AuthController::class, 'store']);
+
+//profile
+Route::get('/profile', [AuthController::class, 'show'])->name('profile');
+Route::put('/profile/update', [AuthController::class, 'update'])->name('profile.update');
+
+//update pass
+Route::get('/updatePassword', [AuthController::class, 'showUpdatePass'])->name('pass');
+Route::put('/updatePassword/save', [AuthController::class, 'updatePass'])->name('pass.update');
 
 //dashboard
 Route::get('/dashboard', [RoomController::class, 'dashboard']);
@@ -54,9 +63,12 @@ Route::middleware(['admin'])->group(function(){
 Route::middleware(['admin'])->group(function () {
     Route::put('/transactions/{id_transaksi}/verify', [TransactionController::class, 'verify'])->name('transactions.verify');
 });
-Route::middleware(['admin'])->group(function () {
-    Route::delete('/transactions/{id_transaksi}/delete', [TransactionController::class, 'destroy'])->name('transactions.destroy');
-});
+Route::delete('/transactions/{id_transaksi}/delete', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+
+//transactions booking bagian customer
 Route::get('/booking', [TransactionController::class, 'show']);
 Route::get('/booking/add/{id_kamar}', [TransactionController::class, 'showStore'])->name('booking.showStore');
 Route::post('/booking/add', [TransactionController::class, 'store'])->name('booking.add')->middleware(('auth.user'));
+Route::put('/booking/{id_transaksi}', [TransactionController::class, 'update'])->name('booking.update');
+Route::put('/booking/{id_transaksi}/verify', [TransactionController::class, 'updateStatus'])->name('booking.verify');
+Route::get('/cetak-bukti-transaksi/{id}', [TransactionController::class, 'cetakBuktiTransaksi'])->name('cetak.bukti.transaksi');

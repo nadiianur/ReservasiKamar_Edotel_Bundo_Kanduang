@@ -83,6 +83,11 @@
     <br><br>
     <hr><br>
     <h3 id="booking" style="color: #13315C; margin-left:10px; font-weight:700; text-align:center">Our Rooms</h3>
+    @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
 </div>
 <div class="row" style="margin-block: 5vh; margin-left:20px; margin-right:20px">
     @foreach($rooms as $room)
