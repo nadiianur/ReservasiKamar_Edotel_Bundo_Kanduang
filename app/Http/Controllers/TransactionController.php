@@ -6,6 +6,8 @@ use App\Models\Transaksi;
 use App\Models\User;
 use App\Models\Kamar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -63,12 +65,13 @@ class TransactionController extends Controller
         return redirect('transactions')->with('success', 'Transaction deleted successfully');
     }
 
-    /**
-     * Show the form for creating a new resource.
+     /**
+     * Display the specified resource.
      */
-    public function create()
+    public function showStore($id_kamar)
     {
-        //
+       $rooms = Kamar::findOrFail($id_kamar);
+        return view('transaction.roomBooking', compact('rooms'));
     }
 
     /**
@@ -76,15 +79,56 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'id_kamar' => 'required|exists:rooms,id_kamar',
+            'check_in_at' => 'required|date',
+            'check_out_at' => 'required|date',
+        ]);
+
+        //req id_kamar yang di klik
+        $rooms = Kamar::find($request->id_kamar);
+        if (!$rooms) {
+            return redirect()->back()->with('error', 'Invalid room ID');
+        }
+
+        $lama_penginapan = Carbon::parse($data['check_in_at'])->diffInDays(Carbon::parse($data['check_out_at']));
+        $total_harga = $lama_penginapan * $rooms->harga;
+
+        $dataBooking = [
+            'id_user' => Auth::id(),
+            'id_kamar' => $rooms->id_kamar,
+            'check_in_at' => $data['check_in_at'],
+            'check_out_at' => $data['check_out_at'],
+            'lama_penginapan' => $lama_penginapan,
+            'total_harga' => $total_harga,
+            'status' => 'booking',
+        ];
+
+        // $data['id_user'] = Auth::id();
+        // $data['id_kamar'] = Kamar::find($id_kamar);
+        // $data['lama_penginapan'] = $data['check_in_at']->diff($data['check_out_at'])->days;
+        // $data['total_harga'] = $data['lama_penginapan'] * $rooms->harga;
+        // $data['status'] = 'booking';
+
+        Transaksi::create($dataBooking);
+
+        //ubah status room
+        $rooms->status = 'not ready';
+        $rooms->save();
+
+        return redirect('dashboard')->with('success', 'Booking Room Successful!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
-        //
+        $id_user = Auth::user();
+        $transactions = $id_user->transaksi;
+        $user = User::find('id_user');
+        $kamar = Kamar::find('id_kamar');
+        return view('transaction.booking', compact('transactions', 'user', 'kamar'));
     }
 
     /**

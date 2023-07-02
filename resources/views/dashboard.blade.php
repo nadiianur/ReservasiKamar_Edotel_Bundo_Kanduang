@@ -12,7 +12,8 @@
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width:900px;"><i
                                 class="fa fa-home fa-4x text-primary mb-4 d-none d-sm-block"></i>
-                            <h3 class="display-3 text-uppercase text-white mb-md-4 fw-semibold">Experience Unparalleled Comfort and
+                            <h3 class="display-3 text-uppercase text-white mb-md-4 fw-semibold">Experience Unparalleled
+                                Comfort and
                                 Serenity at StayScape</h3>
                             <a href="#our-services" class="btn btn-info py-md-2 px-md-4 mt-2">Our Services</a>
                         </div>
@@ -42,7 +43,8 @@
     <div class="col-lg-10 offset-lg-1">
         <div class="header-text mt-3">
             <br>
-            <h3 id="our-services" style="color: #13315C;font-weight:700;">Discover a World of Relaxation at StayScape </h3>
+            <h3 id="our-services" style="color: #13315C;font-weight:700;">Discover a World of Relaxation at StayScape
+            </h3>
             <p>StayScape is a premier accommodation destination that offers a perfect blend of comfort, serenity and
                 convenience. Nestled in breathtaking surroundings, StayScape provides a tranquil escape from the hustle
                 and bustle of everyday life.
@@ -59,19 +61,22 @@
         <div class="sigma-content col-lg-4 col-md-6 sigma-bg-lightgray">
             <img src="{{ asset('5.png') }}" class="card-img-top" alt="Room Image" style="border-radius: 25px">
             <h4 class="furnitures_text">Gym</h4>
-            <p class="dummy_text">StayScape provides a fully equipped gym facility with modern equipment. Enjoy a wide range of comprehensive fitness equipment for cardio, strength training,
+            <p class="dummy_text">StayScape provides a fully equipped gym facility with modern equipment. Enjoy a wide
+                range of comprehensive fitness equipment for cardio, strength training,
                 and agility exercises.</p>
         </div>
         <div class="sigma-content col-lg-4 col-md-6 sigma-bg-gray">
             <img src="{{ asset('1.png') }}" class="card-img-top" alt="Room Image" style="border-radius: 25px">
             <h4 class="furnitures_text">Swimming Pool</h4>
-            <p class="dummy_text">StayScape features a beautiful and refreshing swimming pool. Our swimming pool is designed to provide a comfortable and enjoyable swimming
+            <p class="dummy_text">StayScape features a beautiful and refreshing swimming pool. Our swimming pool is
+                designed to provide a comfortable and enjoyable swimming
                 experience for guests.</p>
         </div>
         <div class="sigma-content col-lg-4 col-md-12 sigma-bg-darkgray">
             <img src="{{ asset('4.png') }}" class="card-img-top" alt="Room Image" style="border-radius: 25px">
             <h4 class="furnitures_text">Restaurant</h4>
-            <p class="dummy_text">StayScape offers a delightful dining experience at our restaurant. Enjoy a wide selection of delicious dishes made from fresh, locally sourced
+            <p class="dummy_text">StayScape offers a delightful dining experience at our restaurant. Enjoy a wide
+                selection of delicious dishes made from fresh, locally sourced
                 ingredients.</p>
         </div>
     </div>
@@ -87,22 +92,31 @@
                 <!-- Tampilkan data sesuai kebutuhan -->
                 <h5 class="text-center" style="font-weight: 700; color: #8DA9C4">Detail Room</h5>
                 <hr>
-                <p class="card-text fw-semibold" style="color: #13315C"> The room is {{ $room->status }} </p>
+                <p class="card-text fw-semibold" style="color: #13315C"> The room is '{{ strtoupper($room->status) }}' </p>
                 <p class="card-text fw-semibold"><i class="bi bi-wifi"></i> Free Wifi</p>
+                <p class="card-text fw-semibold"> <i class="bi bi-moon"></i> In room {{ $room->no_kamar }} </p>
                 <p class="card-text fw-semibold"><i class="bi bi-bookmark-heart"></i> Type : {{ $room->tipe_kamar }}</p>
                 <p class="card-text fw-semibold"><i class="bi bi-person-fill"></i></i> Max : {{ $room->kapasitas }}
                     person </p>
-                <p class="card-text fw-semibold"> <i class="bi bi-moon"></i> In room {{ $room->no_kamar }} </p>
                 <p class="card-text fw-bold" style="font-size: 22px; color:blue; text-align: right">IDR
                     {{ $room->harga }} </p>
                 <p class="card-text fw-normal" style="font-size: 12px; text-align: right">/room/night</p>
                 <br>
+
+                {{-- Jika Role User Customer --}}
                 @if(Auth::user()->role == 'customer')
-                <button class="d-grid gap-2  col-6 d-md-block btn btn-primary mx-auto">
-                    <p class="card-text fw-semibold"> Booking </p>
-                </button>
+                    @if ($room->status == 'not ready')
+                        <button type="button" class="d-grid gap-2 col-6 d-md-block btn btn-secondary mx-auto" disabled>
+                            <p class="card-text fw-semibold"> Booking </p>
+                        </button>
+                    @else
+                        <a href="{{ route('booking.showStore', $room->id_kamar) }}" type="button" class="d-grid gap-2  col-6 d-md-block btn btn-primary mx-auto">
+                            <p class="card-text fw-semibold"> Booking </p>
+                        </a>
+                    @endif
                 @endif
 
+                {{-- Jika Role User Admin --}}
                 @if(Auth::user()->role == 'admin')
                 <button type="button" class="d-grid gap-2  col-6 d-md-block btn btn-warning mx-auto"
                     data-bs-toggle="modal" data-bs-target="#modalEditRoom{{ $room->id_kamar }}">
@@ -155,7 +169,8 @@
                                         <select class="form-select" id="editStatus" name="status">
                                             <option value="ready" {{ $room->status == 'ready' ? 'selected' : '' }}>
                                                 Ready</option>
-                                            <option value="not ready" {{ $room->status == 'not ready' ? 'selected' : '' }}>
+                                            <option value="not ready"
+                                                {{ $room->status == 'not ready' ? 'selected' : '' }}>
                                                 Not Ready</option>
                                         </select>
                                     </div>
@@ -175,6 +190,7 @@
                     </div>
                 </div>
                 @endif
+                {{-- End Role User Admin --}}
                 <br>
             </div>
         </div>

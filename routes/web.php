@@ -48,11 +48,15 @@ Route::middleware(['admin'])->group(function () {
 });
 
 //transactions
-Route::get('/transactions', [TransactionController::class, 'index']);
+Route::middleware(['admin'])->group(function(){
+    Route::get('/transactions', [TransactionController::class, 'index']);
+});
 Route::middleware(['admin'])->group(function () {
     Route::put('/transactions/{id_transaksi}/verify', [TransactionController::class, 'verify'])->name('transactions.verify');
 });
 Route::middleware(['admin'])->group(function () {
     Route::delete('/transactions/{id_transaksi}/delete', [TransactionController::class, 'destroy'])->name('transactions.destroy');
 });
-
+Route::get('/booking', [TransactionController::class, 'show']);
+Route::get('/booking/add/{id_kamar}', [TransactionController::class, 'showStore'])->name('booking.showStore');
+Route::post('/booking/add', [TransactionController::class, 'store'])->name('booking.add')->middleware(('auth.user'));

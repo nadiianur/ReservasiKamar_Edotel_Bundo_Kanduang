@@ -4,7 +4,7 @@
 @include('header')
 
 <div class="container">
-    <h3 class="mb-3 mt-4" style="color: #13315C; text-align:center">Daftar Rooms Stayscape</h3>
+    <h3 class="mb-3 mt-4" style="color: #13315C; text-align:center">Daftar Transactions Stayscape</h3>
     <br><br>
     <table class="table">
         <thead>
@@ -34,8 +34,6 @@
                 <td>IDR {{ $tr->total_harga }}</td>
                 <td>{{ $tr->status }}</td>
                 <td>
-                    {{-- only admin can view this buttons --}}
-                    @can('view-buttons')
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#modalVerify{{ $tr->id_transaksi }}">
                         Verify
@@ -114,8 +112,6 @@
                         </div>
                     </div>
                     <!-- End Modal Delete-->
-                    @endcan
-
                 </td>
             </tr>
             @endforeach

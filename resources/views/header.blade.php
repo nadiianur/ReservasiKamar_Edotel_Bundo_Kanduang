@@ -12,8 +12,14 @@
           <li><a href="/rooms" class="nav-link px-2 link-body-emphasis">Rooms</a></li>
           @endcan
 
+          @can('view-transactions')
           <li><a href="/transactions" class="nav-link px-2 link-body-emphasis">Booking</a></li>
+          @endcan
+
+          @if(Auth::user()->role == 'customer')
+          <li><a href="/booking" class="nav-link px-2 link-body-emphasis">Booking</a></li>
           {{-- <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li> --}}
+          @endif
         </ul>
 
         <div class="dropdown text-end">
