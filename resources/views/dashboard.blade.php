@@ -15,7 +15,7 @@
                             <h3 class="display-3 text-uppercase text-white mb-md-4 fw-semibold">Experience Unparalleled
                                 Comfort and
                                 Serenity at StayScape</h3>
-                            <a href="#our-services" class="btn btn-info py-md-2 px-md-4 mt-2">Our Services</a>
+                            <a href="#our-services" class="btn btn-info py-md-2 px-md-4 mt-2">About</a>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
     </div>
 
     <hr><br>
-    <h3 id="our-services" style="color: #13315C; margin-left:10px; font-weight:700; text-align:center">Our Services</h3>
+    {{-- <h3 id="our-services" style="color: #13315C; margin-left:10px; font-weight:700; text-align:center">Our Services</h3>
     <div class="row single-page-nav m-auto">
         <div class="sigma-content col-lg-4 col-md-6 sigma-bg-lightgray">
             <img src="{{ asset('5.png') }}" class="card-img-top" alt="Room Image" style="border-radius: 25px">
@@ -81,7 +81,7 @@
         </div>
     </div>
     <br><br>
-    <hr><br>
+    <hr><br> --}}
     <h3 id="booking" style="color: #13315C; margin-left:10px; font-weight:700; text-align:center">Our Rooms</h3>
     @if (session('success'))
     <div class="alert alert-success">

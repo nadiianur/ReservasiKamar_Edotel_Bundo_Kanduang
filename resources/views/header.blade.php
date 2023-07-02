@@ -12,10 +12,11 @@
 
           @can('view-rooms')
           <li><a href="/rooms" class="nav-link px-2 link-body-emphasis">Rooms</a></li>
+          <li><a href="/customers" class="nav-link px-2 link-body-emphasis">Customers</a></li>
           @endcan
 
           @can('view-transactions')
-          <li><a href="/transactions" class="nav-link px-2 link-body-emphasis">Booking</a></li>
+          <li><a href="/transactions" class="nav-link px-2 link-body-emphasis">Transactions</a></li>
           @endcan
 
           @if(Auth::user()->role == 'customer')

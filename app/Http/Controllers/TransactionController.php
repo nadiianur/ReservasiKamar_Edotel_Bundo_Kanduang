@@ -119,7 +119,7 @@ class TransactionController extends Controller
 
         Transaksi::create($dataBooking);
 
-        return redirect('transaction/bookinh')->with('success', 'Booking Room Successful!');
+        return redirect('dashboard')->with('success', 'Booking Room Successful!');
     }
 
     /**

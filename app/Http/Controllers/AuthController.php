@@ -11,6 +11,12 @@ use Session;
 
 class AuthController extends Controller
 {
+    public function index()
+    {
+        $user = User::all();
+        return view('customer.customers' , compact('user'));
+    }
+
     function getSignIn(){
         return view("auth.signIn");
     }
@@ -116,6 +122,22 @@ class AuthController extends Controller
         $user->save();
 
         return redirect('updatePassword')->with('success', 'Password updated successfully.');
+    }
+
+    function createUser(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required',
+            'email' => 'required|unique:users',
+            'no_hp' => 'required|numeric',
+            'jenis_kelamin'=>'required'
+        ]);
+
+        $data['password'] =' ';
+        $data['role'] = 'customer';
+
+        User::create($data);
+        return redirect('customers')->with('success', 'Customers Added Successfully!');
     }
 
     public function logOut(Request $request)

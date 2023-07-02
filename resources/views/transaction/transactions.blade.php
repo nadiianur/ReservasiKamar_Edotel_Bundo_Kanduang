@@ -5,7 +5,7 @@
 
 <div class="container">
     <h3 class="mb-3 mt-4" style="color: #13315C; text-align:center">Daftar Transactions Stayscape</h3>
-    <br><br>
+    <br>
     <table class="table">
         <thead>
             <tr>

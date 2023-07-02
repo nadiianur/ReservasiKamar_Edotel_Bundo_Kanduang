@@ -39,8 +39,17 @@ Route::put('/profile/update', [AuthController::class, 'update'])->name('profile.
 Route::get('/updatePassword', [AuthController::class, 'showUpdatePass'])->name('pass');
 Route::put('/updatePassword/save', [AuthController::class, 'updatePass'])->name('pass.update');
 
+//customers
+Route::middleware(['admin'])->group(function () {
+    Route::get('/customers', [AuthController::class, 'index']);
+});
+Route::middleware(['admin'])->group(function() {
+    Route::post('/customer/add', [AuthController::class, 'createUser'])->name('customer.add');
+});
+
 //dashboard
 Route::get('/dashboard', [RoomController::class, 'dashboard']);
+
 
 //rooms
 Route::middleware(['admin'])->group(function () {
