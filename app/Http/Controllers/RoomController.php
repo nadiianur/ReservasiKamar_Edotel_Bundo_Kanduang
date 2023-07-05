@@ -20,6 +20,12 @@ class RoomController extends Controller
     {
         $rooms = Kamar::all();
         return view('room.katalogRooms', compact('rooms'));
+
+        if (isset($results)) {
+            // Tampilkan hasil pencarian
+            return view('room.katalogRooms', ['results' => $results]);
+        }
+
     }
 
     /**
@@ -70,5 +76,16 @@ class RoomController extends Controller
         $rooms->delete();
 
         return redirect('rooms')->with('success', 'Room deleted successfully');
+    }
+
+    public function searchRoom(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        $rooms = Kamar::where('tipe_kamar', 'like', '%'.$keyword.'%')
+            ->orWhere('kapasitas', 'like', '%'.$keyword.'%')
+            ->get();
+
+        return view('room.searchRoom', compact('rooms'));
     }
 }

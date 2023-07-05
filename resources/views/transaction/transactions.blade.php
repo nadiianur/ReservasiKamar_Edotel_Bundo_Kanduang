@@ -35,7 +35,7 @@
     @endif
 
     {{-- Add Transaksi --}}
-    <button type="button" class="button btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahRoom">
+    <button type="button" class="button btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahTransaksi">
         + New Transaction
     </button>
     <!-- Modal Add-->
@@ -73,7 +73,6 @@
                                 @if ($r->status == 'ready')
                                 <option value="{{ $r->id_kamar }}">{{ $r->no_kamar }} | {{ $r->tipe_kamar }} - IDR
                                     {{ $r->harga }}</option>
-
                                 @endif
                                 @endforeach
                         </div>
@@ -91,6 +90,8 @@
                             <input type="datetime-local" class="datetime"
                                 style="margin-left: 37px; border-radius:8px; width: 250px" name="check_out_at" required>
                         </div>
+                        <hr>
+                        <p class="fw-semibold" style="color: #13315C">Payment is made offline at StayScape reception, proceed to confirm customer payment.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -107,16 +108,17 @@
     <br><br>
     <table class="table" >
         <thead>
-            <tr>
+            <tr style="text-align: center;">
                 <th>No</th>
                 <th>Nama</th>
-                <th>Number of Room</th>
-                <th>Type of Room</th>
+                <th>Number Room</th>
+                <th>Type Room</th>
                 <th>Check In At</th>
                 <th>Check Out At</th>
                 <th>Length of Stay</th>
                 <th>Total Price</th>
                 <th>Status</th>
+                <th>Payment</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -132,6 +134,7 @@
                 <td>{{ $tr->lama_penginapan }} day</td>
                 <td>IDR {{ $tr->total_harga }}</td>
                 <td>{{ $tr->status }}</td>
+                <td>{{ $tr->pembayaran }}</td>
                 <td>
                     {{-- Verify Status Transaksi --}}
                     <button type="button" class="btn btn-success" data-bs-toggle="modal"
@@ -144,7 +147,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Verify Status Customer</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Verify Status Transaction</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
@@ -152,20 +155,47 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="modal-body">
+                                        @if ($tr->status === 'booking' && $tr->pembayaran === 'paid')
                                         <div class="mb-3">
                                             <label for="editTipeKamar">Status</label>
                                             <select class="form-select" id="verify" name="status">
-                                                <option value="booking"
-                                                    {{ $tr->status == 'booking' ? 'selected' : '' }}>Booking</option>
+                                                <option selected>Pilih</option>
                                                 <option value="verified"
                                                     {{ $tr->status == 'verified' ? 'selected' : '' }}>Verified</option>
+                                            </select>
+                                        </div>
+                                        @elseif ($tr->status ==='verified' && $tr->pembayaran === 'paid')
+                                        <div class="mb-3">
+                                            <label for="editTipeKamar">Status</label>
+                                            <select class="form-select" id="verify" name="status">
+                                                <option selected>Pilih</option>
                                                 <option value="check in"
                                                     {{ $tr->status == 'check in' ? 'selected' : '' }}>Check In</option>
+                                            </select>
+                                        </div>
+                                        @elseif ($tr->status === 'booking' && $tr->pembayaran === 'unpaid')
+                                        <div class="mb-3">
+                                            <p class="fw-semibold" style="color: #13315C">Payment is made offline at StayScape reception, proceed to confirm customer payment.</p>
+                                            <hr>
+                                            <p class="fw-normal">Change status transaction </p>
+                                            <label for="editTipeKamar">Status</label>
+                                            <select class="form-select" id="verify" name="status">
+                                                <option selected>Pilih</option>
+                                                <option value="verified"
+                                                    {{ $tr->status == 'verified' ? 'selected' : '' }}>Verified</option>
+                                            </select>
+                                        </div>
+                                        @else
+                                        <div class="mb-3">
+                                            <label for="editTipeKamar">Status</label>
+                                            <select class="form-select" id="verify" name="status">
+                                                <option selected>Pilih</option>
                                                 <option value="check out"
                                                     {{ $tr->status == 'check out' ? 'selected' : '' }}>Check Out
                                                 </option>
                                             </select>
                                         </div>
+                                        @endif
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"

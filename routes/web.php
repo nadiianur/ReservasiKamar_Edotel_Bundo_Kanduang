@@ -54,6 +54,7 @@ Route::get('/dashboard', function () {
 
 //katalog rooms
 Route::get('/katalogRooms', [RoomController::class, 'dashboard']);
+Route::get('/katalogRooms/search', [RoomController::class, 'searchRoom'])->name('room.search');
 
 //rooms
 Route::middleware(['admin'])->group(function () {
@@ -78,7 +79,15 @@ Route::middleware(['admin'])->group(function () {
 });
 Route::delete('/transactions/{id_transaksi}/delete', [TransactionController::class, 'destroy'])->name('transactions.destroy');
 
-//transactions booking bagian customer
+//add transaction booking by admin
+Route::middleware(['admin'])->group(function(){
+    Route::get('/transaction/create', [TransactionController::class, 'create'])->name('transaction.create');
+});
+Route::middleware(['admin'])->group(function(){
+    Route::post('/transaction/storeByAdmin', [TransactionController::class, 'storeByAdmin'])->name('transaction.storeByAdmin');
+});
+
+//transactions booking by customer
 Route::get('/booking', [TransactionController::class, 'show']);
 Route::get('/riwayatBooking', [TransactionController::class, 'showMyBooking']);
 Route::get('/booking/add/{id_kamar}', [TransactionController::class, 'showStore'])->name('booking.showStore');
@@ -87,10 +96,3 @@ Route::put('/booking/{id_transaksi}', [TransactionController::class, 'update'])-
 Route::put('/booking/{id_transaksi}/verify', [TransactionController::class, 'verifyBooking'])->name('booking.verify');
 Route::get('/cetak-bukti-transaksi/{id}', [TransactionController::class, 'cetakBuktiTransaksi'])->name('cetak.bukti.transaksi');
 
-//transaction booking by admin
-Route::middleware(['admin'])->group(function(){
-    Route::get('/transaction/create', [TransactionController::class, 'create'])->name('transaction.create');
-});
-Route::middleware(['admin'])->group(function(){
-    Route::post('/transaction/storeByAdmin', [TransactionController::class, 'storeByAdmin'])->name('transaction.storeByAdmin');
-});

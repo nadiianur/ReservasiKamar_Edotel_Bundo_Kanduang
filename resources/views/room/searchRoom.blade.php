@@ -16,34 +16,28 @@
     </ul>
     @endif
 
-    <h3 class="mb-3 mt-4" style="color: #13315C; text-align:center">Rooms Stayscape</h3>
-
-    <div class="row">
-        <div class="col-md-6 offset-md-3 mb-3 mt-3">
-            <form action="{{ route('room.search') }}" method="GET">
-                <div class="input-group">
-                    <input type="text" class="form-control" name="keyword" placeholder="Search by type or capacity">
-                    <button class="btn btn-outline-secondary" type="submit">Search</button>
-                </div>
-            </form>
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="/katalogRooms" class="text-decoration-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                class="bi bi-backspace-fill" viewBox="0 0 16 16">
+                <path
+                    d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2V3zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8 5.829 5.854z">
+                </path>
+            </svg>
+        </a>
+        <h3 class="mt-3" style="color: #13315C; margin-right: 550px"> Search Results</h3>
     </div>
 
-    @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
-
+    @if (count($rooms) > 0)
     <div class="row" style="margin-block: 5vh;">
         @foreach($rooms as $room)
-        <div class="col-sm-3 mb-5 mx-5">
+        <div class="col-sm-4 mb-4">
             <div class="card">
                 <div class="card-body">
                     <!-- Tampilkan data sesuai kebutuhan -->
-                    <h5 class="text-center" style="font-weight: 700; color: #13315C">{{ ucfirst  ($room->tipe_kamar) }}</h5>
+                    <h5 class="text-center" style="font-weight: 700; color: #8DA9C4">Detail Room</h5>
                     <hr>
-                    <p class="card-text fw-semibold" style="color:goldenrod"> The room is
+                    <p class="card-text fw-semibold" style="color: #13315C"> The room is
                         '{{ strtoupper($room->status) }}' </p>
                     <p class="card-text fw-semibold"><i class="bi bi-wifi"></i> Free Wifi</p>
                     <p class="card-text fw-semibold"> <i class="bi bi-moon"></i> In room {{ $room->no_kamar }} </p>
@@ -152,4 +146,10 @@
         @endforeach
     </div>
 
-    @endsection
+    @else
+    <p class="text-center">No rooms found.</p>
+    @endif
+
+</div>
+
+@endsection

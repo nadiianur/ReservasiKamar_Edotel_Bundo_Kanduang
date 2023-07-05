@@ -12,6 +12,9 @@
 </head>
 
 <body>
+    <div style="margin-top: 50px; text-align:center" >
+        <h5 style="font-weight: 900; color: #13315C">Register Account</h5>
+    </div>
     <div class="container">
         <div class="screen">
             <div class="screen__content">

@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="container">
-		<div class="screen">
+		<div class="screen" style="margin-top: 105px">
 			<div class="screen__content">
                 <div style="margin-top: 80px; margin-left: 30px;">
                     <h5 style="font-weight: 900; color: #8DA9C4">Welcome Back!</h5>

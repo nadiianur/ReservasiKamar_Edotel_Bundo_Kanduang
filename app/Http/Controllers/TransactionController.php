@@ -31,7 +31,7 @@ class TransactionController extends Controller
     public function verify(Request $request, $id_transaksi)
     {
         $request->validate([
-            'status' => 'booking',
+            'status' => 'required',
         ]);
 
         $transactions = Transaksi::find($id_transaksi);
@@ -47,6 +47,12 @@ class TransactionController extends Controller
             if($rooms){
             $rooms->update(['status' => 'not ready']);
             }
+        }
+
+         // Ubah status pembayaran
+        if ($transactions->status == 'verified') {
+            $transactions->pembayaran = 'paid';
+            $transactions->save();
         }
 
         return redirect()->back()->with('success', 'Transaction has been verified');
@@ -114,7 +120,7 @@ class TransactionController extends Controller
 
         Transaksi::create($dataBooking);
 
-        return redirect('katalogRooms')->with('success', 'Booking Room Successful!');
+        return redirect('booking')->with('success', 'Booking Room Successful!');
     }
 
     public function create()
@@ -150,7 +156,8 @@ class TransactionController extends Controller
                 'check_out_at' => $validated['check_out_at'],
                 'lama_penginapan' => $lama_penginapan,
                 'total_harga' => $total_harga,
-                'status' => 'booking',
+                'status' => 'verified',
+                'pembayaran' => 'paid'
             ];
 
             $kamar->status = 'not ready';
