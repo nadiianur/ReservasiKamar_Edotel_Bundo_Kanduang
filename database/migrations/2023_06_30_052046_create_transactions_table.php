@@ -20,6 +20,7 @@ return new class extends Migration
             $table->dateTime('check_in_at');
             $table->dateTime('check_out_at');
             $table->bigInteger('lama_penginapan');
+            $table->string('pembayaran');
             $table->timestamps();
         });
 

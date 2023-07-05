@@ -13,10 +13,19 @@
     }
 </style>
 
+<ul class="nav nav-tabs justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link mx-3"  href="/katalogRooms">Katalog Rooms</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active mx-3" aria-current="page" href="/rooms">List Rooms</a>
+    </li>
+</ul>
+
 <div class="container">
     <h3 class="mb-3 mt-4" style="color: #13315C; text-align:center">Daftar Rooms Stayscape</h3>
 
-    {{-- menampilkan alert jika saat pengisian data di modal suksess atau gagal --}}
+    {{-- menampilkan alert msg --}}
     @if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
@@ -31,10 +40,10 @@
         </ul>
     </div>
     @endif
-    {{-- end alert --}}
 
+    {{-- Add Room --}}
     <button type="button" class="button btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahRoom">
-        + Add New Room
+        + New Room
     </button>
     <!-- Modal Add-->
     <div class="modal fade" id="modalTambahRoom" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -95,8 +104,10 @@
             </div>
         </div>
     </div>
-    <!-- End Modal Add-->
+    {{-- End Add Room --}}
 
+
+    {{-- Menampilkan data room --}}
     <br><br>
     <table class="table">
         <thead>
@@ -120,11 +131,11 @@
                 <td>{{ $room->status }}</td>
                 <td>{{ $room->kapasitas }} person</td>
                 <td>
+                    {{-- Edit Transaksi --}}
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                         data-bs-target="#modalEditRoom{{ $room->id_kamar }}">
-                        <i class="bi bi-pencil-fill"></i> Edit
+                        <i class="bi bi-pencil-fill"></i>
                     </button>
-
                     <!-- Modal Edit-->
                     <div class="modal fade" id="modalEditRoom{{ $room->id_kamar }}" tabindex="-1"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -190,13 +201,14 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Modal Edit-->
+                    {{-- End Edit Transaksi --}}
 
+
+                    {{-- Delete Transaksi --}}
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                         data-bs-target="#modalHapusData{{$room->id_kamar}}">
-                        <i class="bi bi-trash"></i> Delete
+                        <i class="bi bi-trash"></i>
                     </button>
-
                     <!-- Modal Delete-->
                     <div class="modal fade" id="modalHapusData{{$room->id_kamar}}" tabindex="-1"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -221,12 +233,13 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Modal Delete-->
+                    {{-- End Delete Transaksi --}}
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
+    {{-- End menampilkan data room --}}
 </div>
 
 

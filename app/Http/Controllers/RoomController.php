@@ -13,13 +13,13 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = Kamar::all();
-        return view('room/rooms' , compact('rooms'));
+        return view('room.rooms' , compact('rooms'));
     }
 
     public function dashboard()
     {
         $rooms = Kamar::all();
-        return view('dashboard', compact('rooms'));
+        return view('room.katalogRooms', compact('rooms'));
     }
 
     /**
@@ -58,7 +58,7 @@ class RoomController extends Controller
         $rooms = Kamar::findOrFail($id_kamar);
         $rooms->update($request->all());
 
-        return redirect('rooms')->with('success', 'Room updated successfully');
+        return redirect('katalogRooms')->with('success', 'Room updated successfully');
     }
 
     /**

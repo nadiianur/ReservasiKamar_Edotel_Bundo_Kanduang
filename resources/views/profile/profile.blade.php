@@ -4,7 +4,7 @@
 @include('header')
 
 <div class="container">
-    <h1 class="mt-4" style="color: #13315C">Update Profile</h1>
+    <h1 class="mt-4" style="color: #13315C">My Profile</h1>
     <hr>
     <div class="row m-auto">
         <!-- left column -->
@@ -26,7 +26,6 @@
 
         <!-- edit form column -->
         <div class="col-md-9 personal-info" >
-            <h3>Personal info</h3>
             @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -44,32 +43,31 @@
             <form class="form-horizontal" role="form" method="POST" action="{{ route('profile.update') }}">
                 @csrf
                 @method('PUT')
-                <div class="form-group mt-3">
-                    <label class="col-lg-3 control-label">Nama</label>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label fw-semibold">Nama</label>
                     <div class="col-lg-8">
                         <input class="form-control" type="text" value="{{ $user->nama }}" name="nama">
                     </div>
                 </div>
                 <div class="form-group mt-3">
-                    <label class="col-lg-3 control-label">Email</label>
+                    <label class="col-lg-3 control-label fw-semibold">Email</label>
                     <div class="col-lg-8">
                         <input class="form-control" type="text" value="{{ $user->email }}" name="email">
                     </div>
                 </div>
                 <div class="form-group mt-3">
-                    <label class="col-lg-3 control-label">No HP</label>
+                    <label class="col-lg-3 control-label fw-semibold">No HP</label>
                     <div class="col-lg-8">
                         <input class="form-control" type="text" value="{{ $user->no_hp }}" name="no_hp">
                     </div>
                 </div>
                 <div class="form-group mt-3">
-                    <label class="col-lg-3 control-label">Jenis Kelamin</label>
+                    <label class="col-lg-3 control-label fw-semibold">Jenis Kelamin</label>
                     <div class="col-lg-8">
                         <input class="form-control" type="text" value="{{ $user->email }}" name="jenis_kelamin">
                     </div>
                 </div>
                 <div class="form-group mt-3">
-                    <label class="col-md-3 control-label"></label>
                     <div class="col-md-8">
                         <button type="submit" class="btn btn-success">Save Changes</button>
                         <button type="reset" class="btn btn-secondary">Cancel</button>

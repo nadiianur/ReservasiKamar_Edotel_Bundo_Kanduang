@@ -16,7 +16,7 @@
 <div class="container">
     <h3 class="mb-3 mt-4" style="color: #13315C; text-align:center">Daftar Customer Stayscape</h3>
 
-    {{-- menampilkan alert jika saat pengisian data di modal suksess atau gagal --}}
+    {{-- menampilkan alert msg --}}
     @if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
@@ -31,13 +31,14 @@
         </ul>
     </div>
     @endif
-    {{-- end alert --}}
 
-    <button type="button" class="button btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahRCustomer">
-        + Add New Customer
+    {{-- Add Customer --}}
+    <button type="button" class="button btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahCustomer">
+        + New Customer
     </button>
     <!-- Modal Add-->
-    <div class="modal fade" id="modalTambahRCustomer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalTambahCustomer" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -77,8 +78,9 @@
             </div>
         </div>
     </div>
-    <!-- End Modal Add-->
+    {{-- End Add Customer --}}
 
+    {{-- Menampilkan Data Customer --}}
     <br><br>
     <table class="table">
         <thead>
@@ -102,7 +104,7 @@
             @endforeach
         </tbody>
     </table>
+    {{-- End Menampilkan Data Customer --}}
 </div>
-
 
 @endsection

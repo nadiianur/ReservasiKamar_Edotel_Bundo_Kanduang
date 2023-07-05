@@ -3,33 +3,50 @@
 @section('konten')
 @include('header')
 
-<div style="margin-left: 134px">
-    <h2 class="mt-4" style="font-weight:normal; color: #13315C;">Please Review Your Transaction</h2>
-    <h5 class="mt-3 mb-4">Data Transaction</h5>
+<div class="container">
+    <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link active mx-3" aria-current="page" href="/booking">Verify Transaction</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link mx-3" href="/riwayatBooking">Riwayat Transactions</a>
+        </li>
+    </ul>
+
+    <h2 class="mt-4" style="font-weight:normal; color: #13315C; margin-left: 147px">Please Review Your Transaction</h2>
+    <h5 class="mt-3 mb-4" style="margin-left: 147px">Data Transaction</h5>
+
+    {{-- menampilkan alert msg --}}
     @if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
     @endif
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     @foreach ($transactions as $tr)
-    <div class="card mb-5 mt-3" style="width: 1000px">
+    <div class="container card mb-5 mt-3" style="width: 1000px">
         <div class="card-body">
-            <table>
+            <table class="container">
                 <tr>
                     <td>
-                        <p class="m-auto fw-bold" style="color:saddlebrown">ID Transaksi : {{ $tr->id_transaksi }}</p>
+                        <p class="m-auto fw-bold" style="color:saddlebrown">ID Transaksi : {{ $tr->id_transaksi }}
+                        </p>
                     </td>
                     <td>
-                        @if ($tr->status === 'filled')
-                        <button type="button" class="btn btn-danger " data-bs-toggle="modal" style="margin-left: 780px"
+                        <button type="button" class="btn btn-danger " data-bs-toggle="modal"
+                            style="position: absolute; top: 10px; right: 25px"
                             data-bs-target="#modalHapusData{{$tr->id_transaksi}}">
                             <i class="bi bi-trash3"></i>
                         </button>
-                        @else
-                        <a href="{{ route('cetak.bukti.transaksi', $tr->id_transaksi) }}"
-                            style="margin-left: 780px; "><i class="bi bi-download" style="font-size: 20px;"></i></a>
-                        @endif
-
                         <!-- Modal Delete-->
                         <div class="modal fade" id="modalHapusData{{$tr->id_transaksi}}" tabindex="-1"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -56,7 +73,6 @@
                             </div>
                         </div>
                         <!-- End Modal Delete-->
-
                     </td>
                 </tr>
             </table>
@@ -65,14 +81,15 @@
             <table class="mt-4">
                 <tr style="font-weight:600">
                     <td>Check-In</td>
-                    <td style="padding-left:200px">Check-Out</td>
-                    <td style="padding-left:200px">Duration</td>
+                    <td style="padding-left:150px">Check-Out</td>
+                    <td style="padding-left:150px">Duration</td>
                 </tr>
                 <tr>
-                    <td class="fw-light">{{ strftime('%a, %e %B %Y at %H:%M:%S', strtotime($tr->check_in_at)) }}</td>
-                    <td class="fw-light" style="padding-left:200px">
+                    <td class="fw-light">{{ strftime('%a, %e %B %Y at %H:%M:%S', strtotime($tr->check_in_at)) }}
+                    </td>
+                    <td class="fw-light" style="padding-left:150px">
                         {{ strftime('%a, %e %B %Y at %H:%M:%S', strtotime($tr->check_out_at)) }}</td>
-                    <td class="fw-light" style="padding-left:200px">{{ $tr->lama_penginapan }} Night</td>
+                    <td class="fw-light" style="padding-left:150px">{{ $tr->lama_penginapan }} Night</td>
                 </tr>
             </table>
             <br>
@@ -109,14 +126,18 @@
 
             <hr style="border-width: 3px" class="mt-5">
             <p class="mt-3" style="font-weight:700; font-size: 18px">Cancellation Policy</p>
-            <p>At StayScape Accommodation, we understand that sometimes plans change and it may be necessary to cancel a
+            <p>At StayScape Accommodation, we understand that sometimes plans change and it may be necessary to
+                cancel a
                 booking. Please carefully review our cancellation policy below:</p>
             <ol>
-                <li>Cancellation made more than 72 hours prior to the scheduled check-in date: You will receive a full
+                <li>Cancellation made more than 72 hours prior to the scheduled check-in date: You will receive a
+                    full
                     refund of the booking amount.</li>
-                <li>Cancellation made between 24 to 72 hours prior to the scheduled check-in date: A cancellation fee
+                <li>Cancellation made between 24 to 72 hours prior to the scheduled check-in date: A cancellation
+                    fee
                     equivalent to one night's stay will be charged, and the remaining amount will be refunded.</li>
-                <li>Cancellation made less than 24 hours prior to the scheduled check-in date or in case of a no-show:
+                <li>Cancellation made less than 24 hours prior to the scheduled check-in date or in case of a
+                    no-show:
                     No refund will be provided.</li>
             </ol>
 
@@ -131,7 +152,7 @@
                 </tr>
             </table>
 
-            {{-- Button edit dan verify booking --}}
+            {{-- Button edit --}}
             <hr style="border-width: 3px" class="mt-5">
             <div class="d-flex justify-content-center">
                 @if ($tr->status === 'filled')
@@ -160,6 +181,24 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="no_kamar" class="form-label">Room</label>
+                                        <select class="form-select" id="no_kamar" aria-label="Default select example"
+                                            name="no_kamar" required>
+                                            <option selected>{{ $tr->kamar->no_kamar}} | {{ $tr->kamar->tipe_kamar}}
+                                                - IDR {{ $tr->kamar->harga}}</option>
+                                            @foreach ($kamar as $r)
+                                            @if ($r->status == 'ready')
+                                            <option value="{{ $r->id_kamar }}">{{ $r->no_kamar }} |
+                                                {{ $r->tipe_kamar }} - IDR
+                                                {{ $r->harga }}</option>
+                                            @endif
+                                            @endforeach
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="" class="form-label"></label>
+                                        <input type="hidden">
+                                    </div>
                                     <div class="mb-4">
                                         <label for="inputHarga" class="form-label">Time Check In</label>
                                         <input type="datetime-local" class="datetime"
@@ -182,8 +221,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- End Modal Edit-->
+                {{-- End button edit --}}
 
+                {{-- Button verify dan pembayaran booking --}}
                 @if ($tr->status === 'filled')
                 <button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal"
                     data-bs-target="#modalVerifyStatus{{ $tr->id_transaksi }}">
@@ -195,37 +235,49 @@
                     <i class="bi bi-arrow-bar-right"></i> Verify Booking
                 </button>
                 @endif
-
                 <!-- Modal Verify Status-->
                 <div class="modal fade" id="modalVerifyStatus{{ $tr->id_transaksi }}" tabindex="-1"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Dengan ketentuan kebijakan yang
-                                    telah di sebutkan, apakah anda setuju untuk melanjutkan Transaksi Booking ini?
+                                <h1 class="modal-title fs-5" id="exampleModalLabel"> Verify Booking
                                 </h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <div class="modal-body">
                                 <form action="{{ route('booking.verify', $tr->id_transaksi) }}" method="POST"
                                     class="d-inline">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-success">Verify</button>
+                                    <label class="fw-semibold" for="pembayaran">Payment</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="paid" id="paidCheckbox{{ $tr->id_transaksi }}" name="pembayaran[]">
+                                        <label class="form-check-label" for="paidCheckbox{{ $tr->id_transaksi }}">Transfer Bank/E-money</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="unpaid" id="unpaidCheckbox{{ $tr->id_transaksi }}" name="pembayaran[]">
+                                        <label class="form-check-label" for="unpaidCheckbox{{ $tr->id_transaksi }}">Offline</label>
+                                    </div>
+                                    <p class="mt-4 fw-semibold">With the mentioned policy terms, do you agree to proceed
+                                        with this Payment Transaction?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                                <button type="submit" class="btn btn-success">Verify</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- End Modal Verify Status -->
-
+                {{-- End button verify dan pembayaran booking --}}
             </div>
         </div>
     </div>
     @endforeach
 </div>
+
 
 @endsection

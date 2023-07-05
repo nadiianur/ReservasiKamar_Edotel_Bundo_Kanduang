@@ -48,8 +48,12 @@ Route::middleware(['admin'])->group(function() {
 });
 
 //dashboard
-Route::get('/dashboard', [RoomController::class, 'dashboard']);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
 
+//katalog rooms
+Route::get('/katalogRooms', [RoomController::class, 'dashboard']);
 
 //rooms
 Route::middleware(['admin'])->group(function () {
@@ -76,8 +80,17 @@ Route::delete('/transactions/{id_transaksi}/delete', [TransactionController::cla
 
 //transactions booking bagian customer
 Route::get('/booking', [TransactionController::class, 'show']);
+Route::get('/riwayatBooking', [TransactionController::class, 'showMyBooking']);
 Route::get('/booking/add/{id_kamar}', [TransactionController::class, 'showStore'])->name('booking.showStore');
 Route::post('/booking/add', [TransactionController::class, 'store'])->name('booking.add')->middleware(('auth.user'));
 Route::put('/booking/{id_transaksi}', [TransactionController::class, 'update'])->name('booking.update');
-Route::put('/booking/{id_transaksi}/verify', [TransactionController::class, 'updateStatus'])->name('booking.verify');
+Route::put('/booking/{id_transaksi}/verify', [TransactionController::class, 'verifyBooking'])->name('booking.verify');
 Route::get('/cetak-bukti-transaksi/{id}', [TransactionController::class, 'cetakBuktiTransaksi'])->name('cetak.bukti.transaksi');
+
+//transaction booking by admin
+Route::middleware(['admin'])->group(function(){
+    Route::get('/transaction/create', [TransactionController::class, 'create'])->name('transaction.create');
+});
+Route::middleware(['admin'])->group(function(){
+    Route::post('/transaction/storeByAdmin', [TransactionController::class, 'storeByAdmin'])->name('transaction.storeByAdmin');
+});

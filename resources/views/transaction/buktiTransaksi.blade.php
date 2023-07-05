@@ -93,7 +93,11 @@
         <tr>
             <td>Stayscape Room number {{ $transactions->kamar->no_kamar }}, Type {{ $transactions->kamar->tipe_kamar }}
                 X{{ $transactions->lama_penginapan }}</td>
-            <td style="font-size: 20px; color:#13315C; font-weight:700 ">IDR {{ $transactions->total_harga }}</td>
+            <td style="font-size: 18px; font-weight:600 ">IDR {{ $transactions->total_harga }}</td>
+        </tr>
+        <tr>
+            <td>Payment Status</td>
+            <td style="font-size: 18px; font-weight:600 ">{{ $transactions->pembayaran }}</td>
         </tr>
     </table>
     <br><br>

@@ -31,7 +31,7 @@ class TransactionController extends Controller
     public function verify(Request $request, $id_transaksi)
     {
         $request->validate([
-            'status' => 'required'
+            'status' => 'booking',
         ]);
 
         $transactions = Transaksi::find($id_transaksi);
@@ -109,18 +109,58 @@ class TransactionController extends Controller
             'lama_penginapan' => $lama_penginapan,
             'total_harga' => $total_harga,
             'status' => 'filled',
+            'pembayaran' => 'unpaid',
         ];
-
-        // $data['id_user'] = Auth::id();
-        // $data['id_kamar'] = Kamar::find($id_kamar);
-        // $data['lama_penginapan'] = $data['check_in_at']->diff($data['check_out_at'])->days;
-        // $data['total_harga'] = $data['lama_penginapan'] * $rooms->harga;
-        // $data['status'] = 'booking';
 
         Transaksi::create($dataBooking);
 
-        return redirect('dashboard')->with('success', 'Booking Room Successful!');
+        return redirect('katalogRooms')->with('success', 'Booking Room Successful!');
     }
+
+    public function create()
+    {
+        $user = User::all();
+        $kamar = Kamar::all();
+
+        return view('transaction.transactions', compact('user', 'kamar'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function storeByAdmin(Request $request)
+    {
+        $validated = $request->validate([
+            'nama' => 'required',
+            'no_kamar' => 'required',
+            'check_in_at' => 'required|date',
+            'check_out_at' => 'required|date',
+        ]);
+
+        $kamar = Kamar::find($validated['no_kamar']);
+
+        if ($kamar) {
+            $lama_penginapan = Carbon::parse($validated['check_in_at'])->diffInDays(Carbon::parse($validated['check_out_at']));
+            $total_harga = $lama_penginapan * $kamar->harga;
+
+            $dataBooking = [
+                'id_user' => $validated['nama'],
+                'id_kamar' => $validated['no_kamar'],
+                'check_in_at' => $validated['check_in_at'],
+                'check_out_at' => $validated['check_out_at'],
+                'lama_penginapan' => $lama_penginapan,
+                'total_harga' => $total_harga,
+                'status' => 'booking',
+            ];
+
+            $kamar->status = 'not ready';
+            $kamar->save();
+            Transaksi::create($dataBooking);
+
+            return redirect('transactions')->with('success', 'Booking Room Successful!');
+        }
+    }
+
 
     /**
      * Display the specified resource.
@@ -128,10 +168,22 @@ class TransactionController extends Controller
     public function show()
     {
         $id_user = Auth::user();
+        $transactions = $id_user->transaksi->where('status', 'filled');
+        $user = User::find('id_user');
+        $kamar = Kamar::all();
+        return view('transaction.booking', compact('transactions', 'user', 'kamar'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function showMyBooking()
+    {
+        $id_user = Auth::user();
         $transactions = $id_user->transaksi;
         $user = User::find('id_user');
-        $kamar = Kamar::find('id_kamar');
-        return view('transaction.booking', compact('transactions', 'user', 'kamar'));
+        $kamar = Kamar::all();
+        return view('transaction.riwayatBooking', compact('transactions', 'user', 'kamar'));
     }
 
     /**
@@ -140,42 +192,61 @@ class TransactionController extends Controller
     public function update(Request $request, $id_transaksi)
     {
         $data = $request->validate([
+            'no_kamar' => 'required',
             'check_in_at' => 'required|date',
             'check_out_at' => 'required|date',
         ]);
 
         $transactions = Transaksi::findOrFail($id_transaksi);
 
-        // Mengecek user yang sedang login yang dapat mengedit data bookingnya
-        if ($transactions->id_user != Auth::id()) {
-            return redirect()->back()->with('error', 'You are not authorized to edit this booking');
+        // Mengecek user yang sedang login yang dapat mengedit data booking miliknya
+        if (Auth::user()->role == 'customer') {
+            if ($transactions->id_user != Auth::id()) {
+                return redirect()->back()->with('error', 'You are not authorized to edit this booking');
+            }
         }
 
-        $rooms = Kamar::find($transactions->id_kamar);
+        $kamar = Kamar::find($data['no_kamar']);
 
         $lama_penginapan = Carbon::parse($data['check_in_at'])->diffInDays(Carbon::parse($data['check_out_at']));
-        $total_harga = $lama_penginapan * $rooms->harga;
+        $total_harga = $lama_penginapan * $kamar->harga;
 
         $dataUpdate = [
             'check_in_at' => $data['check_in_at'],
             'check_out_at' => $data['check_out_at'],
+            'id_kamar' => $data['no_kamar'],
             'lama_penginapan' => $lama_penginapan,
             'total_harga' => $total_harga,
         ];
 
         $transactions->update($dataUpdate);
+        $kamar->status = 'not ready';
+        $kamar->save();
 
-        return redirect('booking')->with('success', 'Booking updated successfully');
+        if (Auth::user()->role == 'customer') {
+            return redirect('booking')->with('success', 'Booking updated successfully');
+        } elseif (Auth::user()->role == 'admin') {
+            return redirect('transactions')->with('success', 'Booking updated successfully');
+        }
     }
 
      /**
      * Show the form for editing the specified resource.
      */
-    public function updateStatus($id_transaksi)
+    public function verifyBooking(Request $request, $id_transaksi)
     {
+        $request->validate([
+            'pembayaran' => 'required',
+        ]);
+
         //ubah status transaksi
         $transactions = Transaksi::findOrFail($id_transaksi);
         $transactions->status = 'booking';
+
+
+        //ubah status pembayaran berdasarkan checkboxyang dipilih
+        $pembayaran = $request->has('pembayaran') ? $request->input('pembayaran')[0] : 'default';
+        $transactions->pembayaran = $pembayaran;
         $transactions->save();
 
         //ubah status room

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('nama', 50);
             $table->string('email', 50);
             // $table->timestamp('email_verified_at')->nullable();
-            $table->string('password',250);
-            $table->string('no_hp', 12);
-            $table->string('jenis_kelamin',10);
+            $table->string('password');
+            $table->string('no_hp', 50);
+            $table->enum('jenis_kelamin', ['perempuan', 'laki-laki']);
             // $table->rememberToken();
             $table->timestamps();
         });
