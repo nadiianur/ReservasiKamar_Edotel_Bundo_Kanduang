@@ -117,8 +117,8 @@
                 <th>Check Out At</th>
                 <th>Length of Stay</th>
                 <th>Total Price</th>
-                <th>Status</th>
                 <th>Payment</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -133,14 +133,37 @@
                 <td>{{ $tr->check_out_at }}</td>
                 <td>{{ $tr->lama_penginapan }} day</td>
                 <td>IDR {{ $tr->total_harga }}</td>
-                <td>{{ $tr->status }}</td>
-                <td>{{ $tr->pembayaran }}</td>
+
+                @if ($tr->pembayaran == 'paid')
+                <td style="color:green">Paid</td>
+                @elseif ($tr->pembayaran == 'unpaid')
+                <td style="color:red">Unpaid</td>
+                @endif
+
+                @if ( $tr->status == 'booking')
+                <td style="color: #00c6ee">Booking</td>
+                @elseif (( $tr->status == 'verified'))
+                <td style="color:blue">Verified</td>
+                @elseif (( $tr->status == 'check in'))
+                <td style="color:forestgreen">Check In</td>
+                @elseif (( $tr->status == 'check out'))
+                <td style="color:brown">Check Out</td>
+                @endif
+
                 <td>
                     {{-- Verify Status Transaksi --}}
+                    @if ($tr->status === 'check out')
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#modalVerify{{ $tr->id_transaksi }}" disabled>
+                        <i class="bi bi-check2-circle"></i>
+                    </button>
+                    @else
                     <button type="button" class="btn btn-success" data-bs-toggle="modal"
                         data-bs-target="#modalVerify{{ $tr->id_transaksi }}">
                         <i class="bi bi-check2-circle"></i>
                     </button>
+                    @endif
+
                     <!-- Modal Verify-->
                     <div class="modal fade" id="modalVerify{{  $tr->id_transaksi }}" tabindex="-1"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
