@@ -261,24 +261,17 @@
                                         @if ($tr->status === 'check in' || $tr->status === 'check out' )
                                         <div class="mb-3">
                                             <label for="no_kamar" class="form-label">Room</label>
-                                            <select class="form-select" id="no_kamar"
-                                                aria-label="Default select example" name="no_kamar" required disabled>
-                                                <option selected>{{ $tr->kamar->no_kamar}} | {{ $tr->kamar->tipe_kamar}}
+                                            <select class="form-select" id="no_kamar" aria-label="Default select example"
+                                                name="no_kamar">
+                                                <option value="{{ $tr->id_kamar }}">{{ $tr->kamar->no_kamar}} | {{ $tr->kamar->tipe_kamar}}
                                                     - IDR {{ $tr->kamar->harga}}</option>
-                                                @foreach ($kamar as $r)
-                                                @if ($r->status == 'ready')
-                                                <option value="{{ $r->id_kamar }}">{{ $r->no_kamar }} |
-                                                    {{ $r->tipe_kamar }} - IDR
-                                                    {{ $r->harga }}</option>
-                                                @endif
-                                                @endforeach
                                         </div>
                                         @else
                                         <div class="mb-3">
                                             <label for="no_kamar" class="form-label">Room</label>
-                                            <select class="form-select" id="no_kamar"
-                                                aria-label="Default select example" name="no_kamar" required>
-                                                <option selected>{{ $tr->kamar->no_kamar}} | {{ $tr->kamar->tipe_kamar}}
+                                            <select class="form-select" id="no_kamar" aria-label="Default select example"
+                                                name="no_kamar">
+                                                <option value="{{ $tr->id_kamar }}">{{ $tr->kamar->no_kamar}} | {{ $tr->kamar->tipe_kamar}}
                                                     - IDR {{ $tr->kamar->harga}}</option>
                                                 @foreach ($kamar as $r)
                                                 @if ($r->status == 'ready')

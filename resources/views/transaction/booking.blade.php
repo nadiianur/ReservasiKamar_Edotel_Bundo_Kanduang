@@ -184,8 +184,8 @@
                                     <div class="mb-3">
                                         <label for="no_kamar" class="form-label">Room</label>
                                         <select class="form-select" id="no_kamar" aria-label="Default select example"
-                                            name="no_kamar" required>
-                                            <option selected>{{ $tr->kamar->no_kamar}} | {{ $tr->kamar->tipe_kamar}}
+                                            name="no_kamar">
+                                            <option value="{{ $tr->id_kamar }}">{{ $tr->kamar->no_kamar}} | {{ $tr->kamar->tipe_kamar}}
                                                 - IDR {{ $tr->kamar->harga}}</option>
                                             @foreach ($kamar as $r)
                                             @if ($r->status == 'ready')
@@ -253,11 +253,11 @@
                                     @method('PUT')
                                     <label class="fw-semibold" for="pembayaran">Payment</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="paid" id="paidCheckbox{{ $tr->id_transaksi }}" name="pembayaran[]">
+                                        <input class="form-check-input" onchange="unpaidCheckbox{{ $tr->id_transaksi }}.checked = !this.checked;" type="checkbox" value="paid" id="paidCheckbox{{ $tr->id_transaksi }}" name="pembayaran[]">
                                         <label class="form-check-label" for="paidCheckbox{{ $tr->id_transaksi }}">Transfer Bank/E-money</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="unpaid" id="unpaidCheckbox{{ $tr->id_transaksi }}" name="pembayaran[]">
+                                        <input class="form-check-input" onchange="paidCheckbox{{ $tr->id_transaksi }}.checked = !this.checked;" type="checkbox" value="unpaid" id="unpaidCheckbox{{ $tr->id_transaksi }}" name="pembayaran[]">
                                         <label class="form-check-label" for="unpaidCheckbox{{ $tr->id_transaksi }}">Offline</label>
                                     </div>
                                     <p class="mt-4 fw-semibold">With the mentioned policy terms, do you agree to proceed
