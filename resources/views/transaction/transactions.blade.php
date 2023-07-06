@@ -145,7 +145,7 @@
                 @elseif (( $tr->status == 'verified'))
                 <td style="color:blue">Verified</td>
                 @elseif (( $tr->status == 'check in'))
-                <td style="color:forestgreen">Check In</td>
+                <td style="color:limegreen">Check In</td>
                 @elseif (( $tr->status == 'check out'))
                 <td style="color:brown">Check Out</td>
                 @endif
