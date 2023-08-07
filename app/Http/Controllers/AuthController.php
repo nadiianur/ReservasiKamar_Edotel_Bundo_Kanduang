@@ -47,7 +47,7 @@ class AuthController extends Controller
             'email' => 'required|unique:users,email',
             'password'  => 'required|min:8' ,
             'no_hp' => 'required|numeric',
-            'jenis_kelamin'=>'required'
+            'jenis_kelamin'=>'required|in:perempuan,laki-laki',
         ]);
 
         if ($validator->fails()) {
@@ -59,7 +59,7 @@ class AuthController extends Controller
             'email' => 'required|unique:users',
             'password'  => 'required|min:8' ,
             'no_hp' => 'required|numeric',
-            'jenis_kelamin'=>'required'
+            'jenis_kelamin' => 'required',
         ]);
 
         $data['password'] = Hash::make($data['password']);

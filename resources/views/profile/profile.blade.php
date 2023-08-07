@@ -64,7 +64,7 @@
                 <div class="form-group mt-3">
                     <label class="col-lg-3 control-label fw-semibold">Jenis Kelamin</label>
                     <div class="col-lg-8">
-                        <input class="form-control" type="text" value="{{ $user->email }}" name="jenis_kelamin">
+                        <input class="form-control" type="text" value="{{ $user->jenis_kelamin }}" name="jenis_kelamin">
                     </div>
                 </div>
                 <div class="form-group mt-3">

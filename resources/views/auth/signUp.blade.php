@@ -44,7 +44,7 @@
                         <label for="jenis-kelamin">Jenis Kelamin</label>
                         <select class="form-select" id="jenis-kelamin" aria-label="Default select example"
                             name="jenis_kelamin">
-                            <option selected>Pilih</option>
+                            <option >Pilih</option>
                             <option value="perempuan">Perempuan</option>
                             <option value="laki-laki">Laki-laki</option>
                         </select>
